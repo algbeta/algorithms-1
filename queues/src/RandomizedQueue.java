@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 public class RandomizedQueue<Item> implements Iterable<Item> {
   private Item[] bag;
   private int size;
-  private int position;
+  private int position = 0;
 
   public RandomizedQueue() {
     this.size = 10;
@@ -23,20 +23,21 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
   }
 
   public boolean isEmpty() {
-    return this.bag.length > 0;
+    return this.size() > 0;
   }
 
   public int size() {
-    return this.bag.length;
+    return position;
   }
 
   public void enqueue(Item item) {
     if (item == null) {
       throw new IllegalArgumentException("null is not allowed");
     }
-    if (this.bag.length == this.size) {
+    if (this.position == this.size) {
       this.resize(2 * s.length);
       this.bag[this.size] = item;
+      position++;
     }
   }
 
