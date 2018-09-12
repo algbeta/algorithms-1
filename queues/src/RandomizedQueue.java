@@ -1,5 +1,6 @@
 import edu.princeton.cs.algs4.StdRandom;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -22,6 +23,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     this.size = capacity;
   }
 
+  public Item[] getBag() {
+    return this.bag;
+  }
+
   public boolean isEmpty() {
     return this.size() > 0;
   }
@@ -35,7 +40,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       throw new IllegalArgumentException("null is not allowed");
     }
     if (this.position == this.size) {
-      this.resize(2 * s.length);
+      this.resize(2 * this.bag.length);
       this.bag[this.size] = item;
       position++;
     }
@@ -77,11 +82,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
   }
 
   public Iterator<Item> iterator() {
-    return new RandomizedQueueIterator<Item>();
+    StdRandom.shuffle(bag);
+    return new RandomizedQueueIterator();
   }
 
   private class RandomizedQueueIterator implements Iterator<Item> {
-    private Item[] shuffledCopy = StdRandom.shuffle(bag);
     private int curIndex = 0;
 
     public boolean hasNext() {
@@ -93,7 +98,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         throw new NoSuchElementException();
       }
       this.curIndex++;
-      return shuffledCopy[curIndex];
+      return RandomizedQueue.this.bag[curIndex];
     }
 
     public void remove() {
@@ -102,5 +107,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
   }
 
   public static void main(String[] args) {
+    RandomizedQueue<String> queue = new RandomizedQueue<>();
+    queue.enqueue("element 1");
+    queue.enqueue("element 2");
+
+    System.out.println(Arrays.toString(queue.getBag()));
   } // unit testing (optional)
 }
