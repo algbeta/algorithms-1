@@ -16,7 +16,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
   private void resize(int capacity) {
     Item[] copy = (Item[]) new Object[capacity];
-    for (int i = 0; i < this.size; i++) {
+    for (int i = 0; i < this.bag.length; i++) {
       copy[i] = this.bag[i];
     }
     this.bag = copy;
@@ -28,7 +28,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
   }
 
   public boolean isEmpty() {
-    return this.size() > 0;
+    return this.size() == 0;
   }
 
   public int size() {
@@ -39,11 +39,12 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     if (item == null) {
       throw new IllegalArgumentException("null is not allowed");
     }
-    if (this.position == this.size) {
+    if (this.position == this.bag.length) {
       this.resize(2 * this.bag.length);
-      this.bag[this.size] = item;
-      position++;
     }
+
+    this.bag[this.position] = item;
+    position++;
   }
 
   public Item dequeue() {
@@ -51,6 +52,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       throw new NoSuchElementException();
     }
     int random = StdRandom.uniform(0, this.position - 1);
+
+    Item deleted = this.bag[random];
+
     int desiredLength = this.bag.length;
 
     if (desiredLength / position > 3) {
@@ -68,8 +72,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       }
     }
 
-    Item deleted = this.bag[random];
     this.bag = copy;
+    position--;
     return deleted;
   }
 
@@ -112,5 +116,31 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     queue.enqueue("element 2");
 
     System.out.println(Arrays.toString(queue.getBag()));
-  } // unit testing (optional)
+
+    queue.dequeue();
+    System.out.println(Arrays.toString(queue.getBag()));
+
+    queue.enqueue("element3");
+    queue.enqueue("element4");
+    queue.enqueue("element5");
+    queue.enqueue("element6");
+    System.out.println(Arrays.toString(queue.getBag()));
+
+    queue.enqueue("element7");
+    System.out.println(Arrays.toString(queue.getBag()));
+
+    queue.dequeue();
+    System.out.println(Arrays.toString(queue.getBag()));
+    StdRandom.shuffle(queue.getBag());
+
+    System.out.println(Arrays.toString(queue.getBag()));
+    queue.dequeue();
+    System.out.println(Arrays.toString(queue.getBag()));
+    queue.dequeue();
+    System.out.println(Arrays.toString(queue.getBag()));
+    queue.dequeue();
+    System.out.println(Arrays.toString(queue.getBag()));
+    queue.dequeue();
+    System.out.println(Arrays.toString(queue.getBag()));
+  }
 }
