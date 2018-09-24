@@ -10,22 +10,30 @@ public class FastCollinearPoints {
     checkIfContainsNull(arg);
     Point[] points = arg.clone();
 
-    for (int j = 0; j < points.length; j++) {
+    for (int j = 0; j < points.length - 1; j++) {
       Comparator<Point> pointComporator = arg[j].slopeOrder();
-      Arrays.sort(points, pointComporator);
+      Arrays.sort(points, j + 1, arg.length - 1, pointComporator);
 
-      System.out.println(Arrays.toString(points));
-      int quantity = 0;
-      Point last = null;
-      for (int i = 1; i < points.length - 1; i++) {
+      //System.out.println(Arrays.toString(points));
+      int quantity = 1;
+      ArrayList<Point> lineSegmentSubArray = new ArrayList<>();
+
+      for (int i = j; i < points.length - 1; i++) {
         if (arg[j].slopeTo(points[i]) == arg[j].slopeTo(points[i + 1])) {
+          if (!lineSegmentSubArray.contains(points[i])) {
+            lineSegmentSubArray.add(points[i]);
+            quantity++;
+          }
+          lineSegmentSubArray.add(points[i + 1]);
           quantity++;
-          last = points[i + 1];
         }
       }
+      lineSegmentSubArray.add(arg[j]);
 
-      if (quantity >= 3 && last != null) {
-        segments.add(new LineSegment(arg[j], last));
+      if (quantity >= 4) {
+        LineSegment segment = new LineSegment(lineSegmentSubArray.get(0), lineSegmentSubArray.get(quantity - 1));
+        //System.out.println(segment.toString());
+        segments.add(segment);
       }
     }
   }

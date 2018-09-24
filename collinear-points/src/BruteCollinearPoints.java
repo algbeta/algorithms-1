@@ -69,7 +69,7 @@ public class BruteCollinearPoints {
     arr[0] = new Point(10000, 0);
     arr[1] = new Point(0, 10000);
     arr[2] = new Point(3000, 7000);
-    arr[3] = new Point(3000, 7000);
+    arr[3] = new Point(7000, 3000);
     arr[4] = new Point(20000, 21000);
     arr[5] = new Point(3000, 4000);
     arr[6] = new Point(14000, 15000);
